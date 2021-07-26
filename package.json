@@ -4,7 +4,7 @@
   "description": "envelope generator",
   "main": "index.js",
   "scripts": {
-    "buildas": "npx wa compile eg.c -o eg.min.wasm -O4",
+    "test": "open test.html",
     "build": "npx wa compile eg.c -o /dev/stdout | ../encode-wasm-uint8/bin/encode.js > eg.wasm.js"
   },
   "keywords": [],
