@@ -1,0 +1,17 @@
+{
+  "name": "eg",
+  "version": "1.0.0",
+  "description": "envelope generator",
+  "main": "index.js",
+  "scripts": {
+    "buildas": "npx wa compile eg.c -o eg.min.wasm -O4",
+    "build": "npx wa compile eg.c -o /dev/stdout | ../encode-wasm-uint8/bin/encode.js > eg.wasm.js"
+  },
+  "keywords": [],
+  "author": "Yisheng Jiang",
+  "license": "do-not-use",
+  "dependencies": {
+    "chart": "^0.1.2",
+    "encode-wasm-uint8": "^1.0.1"
+  }
+}
