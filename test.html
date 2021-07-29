@@ -1,67 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <style>
-    * {
-      background-color: black;
-      color: lavender;
-
-    }
-
-  </style>
-  <meta charset="utf-8" />
-  <title>Mocha</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <script src="./testing/testharness.js" crossorigin="anonymous"></script>
-  <script src="./testing/testharnessreport.js" crossorigin="anonymous"></script>
-</head>
-<body>
-  <script type='module'>
-    import {EnvelopeGenerator} from "./index.js";
-    test(() => {
-      const instance = EnvelopeGenerator();
-      assert_true(instance.exports.init_eg != null)
-
-    }, "instantiates synchrounsly");
-    test(() => {
-      const instance = EnvelopeGenerator();
-      for (let i = 0;i < 24;i++) {
-
-        const re2f = instance.exports.init_eg(i * -100, 44, 120, 1100);
-        const obj2 = instance.eg(re2f);
-        //console.log(re2f, obj2)
+  <head>
+    <style>
+      * {
+        background-color: black;
+        color: lavender;
       }
+    </style>
+    <meta charset="utf-8" />
+    <title>Mocha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./testing/testharness.js" crossorigin="anonymous"></script>
 
-    }, "can retrieve eg attribute values");
+    <script src="./testing/testharness.js" crossorigin="anonymous"></script>
+    <script src="./testing/testharnessreport.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+      <div id='reserved'></div>
+      <script type="module">/* eslint-disable no-undef */
+        import {mkcanvas, chart, resetCanvas} from "./node_modules/chart/chart.js";
+        import {EnvelopeGenerator, mkEGWorker} from "./index.js";
+        const {mkEG} = EnvelopeGenerator();
+        const eg = mkEG(11200, 33, 156, 2000, 1200);
+        const c1 = mkcanvas({width: 1200});
+        resetCanvas(c1)
+        chart(c1, eg.roll(1200));
+        eg.release(1200);
+        chart(mkcanvas(), eg.roll(1200))
+        chart(mkcanvas(), eg.roll(1200))
 
-    test(() => {
-      const instance = EnvelopeGenerator();
-      const re2f = instance.exports.init_eg(-4221, 44, 120, 1100);
-      const obref = instance.exports.process(re2f);
-      const ob = new Float32Array(instance.heap.buffer, obref, 128)
-      assert_greater_than(ob[12], ob[1])
+        // promise_test(async () => {
+        //   const {roll, release, reset} = await mkEGWorker(-1200, -2000, 500, -2000, 2000);
+        //   const fl = new Float32Array(128), fl2 = new Float32Array(128);
+        //   roll(fl);
+        //   const flcopyval = fl[2];
+        //   assert_true(fl[2] > 0, "worker provides eg values");
+        //   roll(fl2);
+        //   console.log(fl, fl2);
+        //   assert_true(fl2[2] > fl[2], "second iteration provides higher val"); debugger;
+        //   chart(mkcanvas(343, 232, document.querySelector("#reserved")), fl);
+        // }, "worker");
 
-    }, "can run ");
-    test(() => {
-      const instance = EnvelopeGenerator();
-      const re2f = instance.exports.init_eg(-1221, 290, 150, -12100);
-      const obref = instance.exports.process(re2f);
-      const ob = new Float32Array(instance.heap.buffer, obref, 128)
-      assert_greater_than(ob[12], ob[1])
-    }, "can run quickly");
-    test(() => {
-      const {mkEG} = EnvelopeGenerator();
-      const eg = mkEG(-1222, 33, 156, 122);
-      assert_less_than(eg.roll()[1], eg.roll()[1])
-      assert_less_than(eg.roll()[1], eg.roll()[1])
-      assert_less_than(eg.roll()[1], eg.roll()[1])
-      eg.release();
-      assert_greater_than(eg.roll()[1], eg.roll()[1])
-      assert_greater_than(eg.roll()[1], eg.roll()[1])
+        // test(() => {
+        //   const instance = EnvelopeGenerator();
+        //   assert_true(instance.exports.init_eg != null);
+        // }, "instantiates synchrounsly");
+        //     test(() => {
+        //       const instance = EnvelopeGenerator();
+        //       for (let i = 0;i < 24;i++) {
+        //         const re2f = instance.exports.init_eg(i * -100, 44, 120, 1100);
+        //         const obj2 = instance.eg(re2f);
+        //         //console.log(re2f, obj2)
+        //       }
+        //     }, "can retrieve eg attribute values");
 
-    }, "trigger release");
-  </script>
+        //                                                                                                                                                       test(() => {
+        //                                                                                                                                                         const instance = EnvelopeGenerator();
+        //                                                                                                                                                       const re2f = instance.exports.init_eg(-4221, 44, 120, 1100, 48000);
+        //                                                                                                                                                       const obref = instance.exports.process(re2f);
+        //                                                                                                                                                       const ob = new Float32Array(instance.heap.buffer, obref, 128);
+        //                                                                                                                                                       assert_greater_than(ob[12], ob[1]);
+        //                                                                                                                                                     }, "can run ");
+        //                                                                                                                                                       test(() => {
+        //                                                                                                                                                         const instance = EnvelopeGenerator();
+        //                                                                                                                                                       const re2f = instance.exports.init_eg(-1221, 290, 150, -12100, 48000);
+        //                                                                                                                                                       const obref = instance.exports.process(re2f);
+        //                                                                                                                                                       const ob = new Float32Array(instance.heap.buffer, obref, 128);
+        //                                                                                                                                                       assert_greater_than(ob[12], ob[1]);
+        //                                                                                                                                                     }, "can run quickly");
+        //                                                                                                                                                       test(() => {
+        //                                                                                                                                                         const {mkEG} = EnvelopeGenerator();
+        //                                                                                                                                                       const eg = mkEG(-1222, 33, 156, 122, 48000);
+        //                                                                                                                                                       assert_less_than(eg.roll()[1], eg.roll()[1]);
+        //                                                                                                                                                       assert_less_than(eg.roll()[1], eg.roll()[1]);
+        //                                                                                                                                                       assert_less_than(eg.roll()[1], eg.roll()[1]);
+        //                                                                                                                                                       eg.release();
 
-</body>
+        //                                                                                                                                                       assert_greater_than(eg.roll()[1], eg.roll()[1]);
+        //                                                                                                                                                       console.log(eg.roll(), eg);
+
+        //                                                                                                                                                       assert_greater_than(eg.roll()[1], eg.roll()[1]);
+        //                                                                                                                                                     }, "trigger release");
+
+</script>
+  </body>
 </html>
